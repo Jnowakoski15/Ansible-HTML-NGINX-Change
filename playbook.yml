@@ -1,0 +1,29 @@
+---
+- name: Deploy HTML file to Nginx
+  hosts: web_servers
+  become: true
+
+  tasks:
+    - name: Ensure Nginx is installed
+      package:
+        name: nginx
+        state: present
+
+    - name: Ensure Nginx service is running
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Copy HTML file to the server
+      copy:
+        src: files/index.html
+        dest: /usr/share/nginx/html/index.html
+      notify:
+        - Reload Nginx
+
+  handlers:
+    - name: Reload Nginx
+      systemd:
+        name: nginx
+        state: restarted
