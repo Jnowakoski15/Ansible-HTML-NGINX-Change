@@ -1,0 +1,8 @@
+---
+- name: Print extra_var hostname
+  hosts: all
+  become: true
+  tasks:
+    - name: Print hostname
+      debug:
+        msg: "{{ extra_var.hostname }}"
